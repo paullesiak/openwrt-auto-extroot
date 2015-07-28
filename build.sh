@@ -22,11 +22,28 @@ if [ -z ${TARGET_PLATFORM} ]; then
     kill -INT $$
 fi
 
+case $TARGET_PLATFORM in
+WNDR3700)
+  ARCH="ar711xx"
+  ARCH2="-generic"
+  ;;
+Mamba)
+  ARCH="mvebu"
+  ARCH2=""
+  ;;
+*)
+  echo "Unexpected platform"
+  exit 1
+  ;;
+esac
+
+REL="rc3"
 BUILD=`dirname "$0"`"/build/"
 BUILD=`absolutize $BUILD`
 IMGTEMPDIR="${BUILD}/openwrt-build-image-extras"
-IMGBUILDERDIR="${BUILD}/OpenWrt-ImageBuilder-15.05-rc3-ar71xx-generic.Linux-x86_64"
-IMGBUILDERURL="https://downloads.openwrt.org/chaos_calmer/15.05-rc3/ar71xx/generic/OpenWrt-ImageBuilder-15.05-rc3-ar71xx-generic.Linux-x86_64.tar.bz2"
+IMGFILE="OpenWrt-ImageBuilder-15.05-${REL}-${ARCH}${ARCH2}.Linux-x86_64.tar.bz2"
+IMGBUILDERDIR="${BUILD}/OpenWrt-ImageBuilder-15.05-${REL}-${ARCH}${ARCH2}.Linux-x86_64"
+IMGBUILDERURL="https://downloads.openwrt.org/chaos_calmer/15.05-${REL}/${ARCH}/generic/${IMGFILE}"
 
 PREINSTALLED_PACKAGES="wireless-tools firewall iptables"
 PREINSTALLED_PACKAGES+=" ppp ppp-mod-pppoe ppp-mod-pppol2tp ppp-mod-pptp kmod-ppp kmod-pppoe"
@@ -45,7 +62,8 @@ fi
 if [ ! -e ${IMGBUILDERDIR} ]; then
     pushd ${BUILD}
     wget --continue ${IMGBUILDERURL}
-    tar jvxf OpenWrt-ImageBuilder*.tar.bz2
+    #tar jvxf OpenWrt-ImageBuilder*.tar.bz2
+    tar jxvf $IMGFILE
     popd
 fi
 
@@ -53,7 +71,7 @@ pushd ${IMGBUILDERDIR}
 
 make image PROFILE=${TARGET_PLATFORM} PACKAGES="${PREINSTALLED_PACKAGES}" FILES=${IMGTEMPDIR}
 
-pushd bin/ar71xx/
+pushd bin/${ARCH}/
 ln -s ../../packages .
 popd
 
