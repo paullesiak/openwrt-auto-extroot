@@ -10,12 +10,19 @@ rootUUID=05d615b3-bef8-460c-9a23-52db8d09e000
 dataUUID=05d615b3-bef8-460c-9a23-52db8d09e001
 swapUUID=05d615b3-bef8-460c-9a23-52db8d09e002
 
-. /lib/ar71xx.sh
+ar71xx=1
+if [ -e /lib/ar71xx.sh ] ; then
+	. /lib/ar71xx.sh
+else
+	ar71xx=0
+fi
+
 
 # let's try some defaults...
 autoprovisionUSBLed="tp-link:green:usb"
 autoprovisionStatusLed="tp-link:green:qss"
 
+if ar71xx ; then
 # CUSTOMIZE
 case $(ar71xx_board_name) in
 "tl-wr1043nd")
@@ -35,6 +42,7 @@ case $(ar71xx_board_name) in
         autoprovisionStatusLed="tp-link:blue:qss"
 	;;
 esac
+fi
 
 log()
 {
