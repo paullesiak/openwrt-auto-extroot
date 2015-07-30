@@ -22,7 +22,7 @@ fi
 autoprovisionUSBLed="tp-link:green:usb"
 autoprovisionStatusLed="tp-link:green:qss"
 
-if ar71xx ; then
+if [ "$ar71xx" -eq "1" ] ; then
 # CUSTOMIZE
 case $(ar71xx_board_name) in
 "tl-wr1043nd")
