@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set
 
 absolutize ()
 {
@@ -23,13 +23,13 @@ if [ -z ${TARGET_PLATFORM} ]; then
 fi
 
 case $TARGET_PLATFORM in
-WNDR3700)
-  ARCH="ar71xx"
-  ARCH2="-generic"
-  ;;
 Mamba)
   ARCH="mvebu"
   ARCH2=""
+  ;;
+WNDR3700|TLMR3020)
+  ARCH="ar71xx"
+  ARCH2="-generic"
   ;;
 *)
   echo "Unexpected platform"
@@ -46,10 +46,17 @@ IMGFILE="OpenWrt-ImageBuilder-15.05${REL}-${ARCH}${ARCH2}.Linux-x86_64.tar.bz2"
 IMGBUILDERDIR="${BUILD}/OpenWrt-ImageBuilder-15.05${REL}-${ARCH}${ARCH2}.Linux-x86_64"
 IMGBUILDERURL="https://downloads.openwrt.org/chaos_calmer/15.05${REL}/${ARCH}/generic/${IMGFILE}"
 
-PREINSTALLED_PACKAGES="wireless-tools firewall iptables"
-PREINSTALLED_PACKAGES+=" ppp ppp-mod-pppoe ppp-mod-pppol2tp ppp-mod-pptp kmod-ppp kmod-pppoe"
-PREINSTALLED_PACKAGES+=" fdisk blkid swap-utils mount-utils block-mount e2fsprogs kmod-fs-ext4 kmod-usb2 kmod-usb-uhci kmod-usb-ohci kmod-usb-storage kmod-usb-storage-extras kmod-mmc"
+PREINSTALLED_PACKAGES="firewall iptables"
+PREINSTALLED_PACKAGES+=" wireless-tools"
+PREINSTALLED_PACKAGES+=" fdisk blkid mount-utils block-mount e2fsprogs kmod-fs-ext4"
+PREINSTALLED_PACKAGES+=" kmod-usb2 kmod-usb-storage kmod-usb-storage-extras"
 PREINSTALLED_PACKAGES+=" luci"
+PREINSTALLED_PACKAGES+=" zram-swap swap-utils"
+
+#PREINSTALLED_PACKAGES+=" kmod-usb-ohci"
+#PREINSTALLED_PACKAGES+=" kmod-usb-uhci"
+#PREINSTALLED_PACKAGES+=" -luci -kmod-ppp -ppp-mod-pppoe -kmod-ip6tables -ip6tables -kmod-ipv6 -odhcp6c -kmod-nf-ipt6 -wireless-tools -wpad-mini -ppp -kmod-gpio-button-hotplug -wpad-mini"
+# PREINSTALLED_PACKAGES+=" kmod-mmc"
 
 mkdir --parents ${BUILD}
 
