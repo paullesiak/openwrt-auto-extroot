@@ -24,7 +24,7 @@ fi
 
 case $TARGET_PLATFORM in
 WNDR3700)
-  ARCH="ar711xx"
+  ARCH="ar71xx"
   ARCH2="-generic"
   ;;
 Mamba)
@@ -37,13 +37,14 @@ Mamba)
   ;;
 esac
 
-REL="rc3"
+REL="-rc3"
+REL=""
 BUILD=`dirname "$0"`"/build/"
 BUILD=`absolutize $BUILD`
 IMGTEMPDIR="${BUILD}/openwrt-build-image-extras"
-IMGFILE="OpenWrt-ImageBuilder-15.05-${REL}-${ARCH}${ARCH2}.Linux-x86_64.tar.bz2"
-IMGBUILDERDIR="${BUILD}/OpenWrt-ImageBuilder-15.05-${REL}-${ARCH}${ARCH2}.Linux-x86_64"
-IMGBUILDERURL="https://downloads.openwrt.org/chaos_calmer/15.05-${REL}/${ARCH}/generic/${IMGFILE}"
+IMGFILE="OpenWrt-ImageBuilder-15.05${REL}-${ARCH}${ARCH2}.Linux-x86_64.tar.bz2"
+IMGBUILDERDIR="${BUILD}/OpenWrt-ImageBuilder-15.05${REL}-${ARCH}${ARCH2}.Linux-x86_64"
+IMGBUILDERURL="https://downloads.openwrt.org/chaos_calmer/15.05${REL}/${ARCH}/generic/${IMGFILE}"
 
 PREINSTALLED_PACKAGES="wireless-tools firewall iptables"
 PREINSTALLED_PACKAGES+=" ppp ppp-mod-pppoe ppp-mod-pppol2tp ppp-mod-pptp kmod-ppp kmod-pppoe"
